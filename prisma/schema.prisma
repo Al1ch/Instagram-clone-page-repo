@@ -32,4 +32,4 @@ model User {
   Bio String?
   profilePic String?
   @@map(name: "users")
-}s
+}
