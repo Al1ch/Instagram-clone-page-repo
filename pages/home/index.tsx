@@ -6,7 +6,6 @@ import { getUsers } from "@/lib/users";
 import { GetServerSideProps } from "next/types";
 import { Post, User } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import SideSection from "@/components/SideSection";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const posts = await prisma.post.findMany();

@@ -32,12 +32,7 @@ type Props = {
   posts?: Post[] | null;
 };
 
-const PublicationSection = async ({
-  profilePic,
-  name,
-  id: userId,
-  posts,
-}: Props) => {
+const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
   //   const { posts } = await getPostsByAuthor(userId);
 
   return (

@@ -7,20 +7,6 @@ import Link from "next/link";
 import { User } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const posts = await prisma.post.findMany();
-  const users = await prisma.user.findMany();
-
-  const postTest = JSON.parse(JSON.stringify(posts));
-  const userTest = JSON.parse(JSON.stringify(users));
-
-  console.log("USERS", users);
-
-  return {
-    props: { postTest, userTest },
-  };
-};
-
 type Props = {
   users?: User[] | null;
 };
