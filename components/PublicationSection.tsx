@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Tab from "./Tab";
 import PublicationForm from "./PublicationForm";
 import Publication from "./Publication";
@@ -33,19 +33,13 @@ type Props = {
 };
 
 const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
-  //   const { posts } = await getPostsByAuthor(userId);
-
   return (
     <div className=" w-full max-w-2xl flex flex-col items-center  justify-center px-8 gap-4 py-6 ">
       <div className="w-full flex justify-center items-center gap-16 ">
         <Tab label="Publications" />
       </div>
       <div className="w-full bg-white ">
-        {/* <PublicationForm
-          image={profilePic ?? ""}
-          authorId={userId}
-          createPublication={createPublication}
-        /> */}
+        <PublicationForm image={profilePic ?? ""} authorId={userId} />
       </div>
       {posts?.map((post) => (
         <Publication

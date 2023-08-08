@@ -8,31 +8,26 @@ import Header from "@/components/Header";
 import { GetServerSideProps } from "next/types";
 import { Post, User } from "@prisma/client";
 import SideBar from "@/components/SideBar";
+import prisma from "@/lib/prisma";
 import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const slug = context.query.userName;
-  let user: User | null = null;
-  let posts: Post[] | null = null;
 
-  let users = await prisma.user.findMany();
+  const users = await prisma.user.findMany();
 
-  try {
-    user = await prisma.user.findFirst({
-      where: {
-        userName: context.query.userName?.toString(),
-      },
-    });
+  const user = await prisma.user.findFirst({
+    where: {
+      userName: context.query.userName?.toString(),
+    },
+  });
 
-    posts = await prisma.post.findMany({
-      where: {
-        authorId: user?.id,
-        published: true,
-      },
-    });
-  } catch (e) {
-    console.log("ERRROR BUG ");
-  }
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId: user?.id,
+      published: true,
+    },
+  });
 
   const postTest = JSON.parse(JSON.stringify(posts));
   const userTest = JSON.parse(JSON.stringify(user));

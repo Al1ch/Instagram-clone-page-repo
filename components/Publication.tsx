@@ -2,6 +2,8 @@ import React from "react";
 import UserProfile from "./UserProfile";
 import Trash from "@/assets/vectors/trash.svg";
 import Button from "./Button";
+import { revalidatePath } from "next/cache";
+import { usePathname } from "next/navigation";
 
 type Props = {
   name: string;
@@ -21,6 +23,12 @@ const getCorrectTimeFormat = (time?: number) => {
   return time;
 };
 
+async function deletePost(id: number, pathName: string): Promise<void> {
+  await fetch(`/api/post/${id}`, {
+    method: "DELETE",
+  });
+}
+
 const Publication = ({
   name,
   url,
@@ -29,6 +37,8 @@ const Publication = ({
   postId,
   disable = false,
 }: Props) => {
+  const pathName = usePathname();
+
   return (
     <div className=" flex flex-col gap-1 justify-items-start w-full  rounded-xl p-6  bg-[#1b2936]">
       <div className=" flex w-full items-center justify-start gap-2">
@@ -53,13 +63,14 @@ const Publication = ({
             {getCorrectTimeFormat(date?.getSeconds())}
           </p>
         </div> */}
-        {/* {!disable && (
-					<Button
-						image={<Trash className={'hover:fill-red-600 transition-colors'} />}
-						className="cursor-pointer"
-						postId={postId}
-					/>
-				)} */}
+        {!disable && (
+          <Button
+            image={<Trash className={"hover:fill-red-600 transition-colors"} />}
+            className="cursor-pointer"
+            postId={postId}
+            onClick={() => deletePost(postId, pathName)}
+          />
+        )}
       </div>
     </div>
   );
