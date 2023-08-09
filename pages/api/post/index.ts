@@ -8,17 +8,24 @@ export default async function handle(
 ) {
   const postId = req.query.id;
 
-  if (req.method === "DELETE") {
-    try {
-      await prisma.post.delete({
-        where: { id: Number(postId) },
-      });
-      revalidatePath("profiles/azn_ch");
+  const { method } = req;
+  console.log("VALUE", req.body);
 
-      res.status(200).json({ text: "Deleted" });
-    } catch (e) {
-      console.log("CA MARCHE PAS ?");
-      res.status(400).json({ error: e });
-    }
+  switch (method) {
+    case "POST":
+      try {
+        const post = await prisma.post.create({
+          data: {
+            content: req.body.content,
+            author: { connect: { id: req.body.authorId } },
+            title: "title",
+            published: true,
+          },
+        });
+        return post;
+      } catch (e) {
+        console.log(e);
+        return e;
+      }
   }
 }
