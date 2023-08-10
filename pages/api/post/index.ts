@@ -19,7 +19,7 @@ export default async function handle(
             published: true,
           },
         });
-        return post;
+        res.status(200).json(post);
       } catch (e) {
         console.log(e);
         return e;
@@ -27,14 +27,18 @@ export default async function handle(
     case "GET":
       console.log("EST CE QUE CA FAIT LE GET ");
       try {
+        console.log("ENTRER TRY ");
         const post = await prisma.post.findMany({
           where: {
             authorId: parseInt(req.query.userId as string),
           },
         });
-        return { post };
+        console.log("FIN  TRY ");
+        res.status(200).json(post);
       } catch (e) {
-        return { e };
+        console.log(e);
+
+        res.status(500).json({ error: "Unable to fetch posts" });
       }
   }
 }

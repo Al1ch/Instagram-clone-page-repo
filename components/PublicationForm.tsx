@@ -7,9 +7,14 @@ import { Post } from "@prisma/client";
 type Props = {
   image: string;
   authorId?: number;
+  onAddPost: (posts: Post) => void;
 };
 
-const PublicationForm = ({ authorId, image }: Props) => {
+const PublicationForm = ({
+  authorId,
+  image,
+  onAddPost: handleAddPost,
+}: Props) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const pathName = usePathname();
   const formRef = useRef<HTMLFormElement>(null);
@@ -26,22 +31,25 @@ const PublicationForm = ({ authorId, image }: Props) => {
     }
   };
 
-  const handlePublicationCreation = async (formData: FormData) => {
+  const handlePublicationCreation = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event?.preventDefault(); //ca enleve le comportement antive du submit notamment recharger la page
+    const formData = new FormData(event.currentTarget);
     const content = formData.get("content");
     const postData = { content, authorId };
-    const res = await axios.post<Post>("http://localhost:3000/api/post", {
+    const { data } = await axios.post<Post>("http://localhost:3000/api/post", {
       content,
       authorId,
     });
-
-    // await createPublication(content as string, authorId || 1, pathName);
-    // formRef.current?.reset();
+    handleAddPost(data);
+    formRef.current?.reset();
   };
 
   return (
     <form
       ref={formRef}
-      onSubmit={(e) => handlePublicationCreation(new FormData(e.currentTarget))}
+      onSubmit={handlePublicationCreation} // sans parenthese tu lui envoie la fonction sinon tu lui envoie ce qu'elle renvoie
       className="flex flex-col p-6 text-slate-50 bg-[#1b2936]"
     >
       <div className="flex items-center  justify-center gap-2">

@@ -24,19 +24,28 @@ const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
         `http://localhost:3000/api/post?userId=${userId}`
       );
       console.log("NEW POST ");
-      setUserPosts([...usersPosts, newPosts.data]);
+      setUserPosts(newPosts.data);
     } catch (e) {
       console.log("ERROR ?");
       console.log(e);
     }
   };
+
+  const handleAddPost = (data: Post) => {
+    setUserPosts([data, ...usersPosts]);
+  };
+
   return (
     <div className=" w-full max-w-2xl flex flex-col items-center  justify-center px-8 gap-4 py-6 ">
       <div className="w-full flex justify-center items-center gap-16 ">
         <Tab label="Publications" />
       </div>
       <div className="w-full bg-white ">
-        <PublicationForm image={profilePic ?? ""} authorId={userId} />
+        <PublicationForm
+          image={profilePic ?? ""}
+          authorId={userId}
+          onAddPost={handleAddPost}
+        />
       </div>
       {usersPosts?.map((post) => (
         <Publication
