@@ -8,14 +8,12 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const postId = req.query.id;
-  console.log("postId", postId);
 
   if (req.method === "DELETE") {
     try {
       await prisma.post.delete({
         where: { id: Number(postId) },
       });
-      revalidatePath("profiles/azn_ch");
       res.status(200).json({ text: "Deleted" });
     } catch (e) {
       console.log("error /e", e);

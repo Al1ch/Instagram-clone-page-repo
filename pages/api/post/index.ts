@@ -6,10 +6,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const postId = req.query.id;
-
   const { method } = req;
-  console.log("VALUE", req.body);
 
   switch (method) {
     case "POST":
@@ -26,6 +23,18 @@ export default async function handle(
       } catch (e) {
         console.log(e);
         return e;
+      }
+    case "GET":
+      console.log("EST CE QUE CA FAIT LE GET ");
+      try {
+        const post = await prisma.post.findMany({
+          where: {
+            authorId: parseInt(req.query.userId as string),
+          },
+        });
+        return { post };
+      } catch (e) {
+        return { e };
       }
   }
 }

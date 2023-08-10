@@ -5,34 +5,31 @@ import Publication from "./Publication";
 import { Post } from "@prisma/client";
 import { getPostsByAuthor } from "@/lib/posts";
 import { GetServerSideProps } from "next/types";
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const user = await prisma.user.findFirst({
-    where: {
-      userName: context.query.toString(),
-    },
-  });
-
-  const posts = await prisma.post.findMany({
-    where: {
-      authorId: user?.id,
-      published: true,
-    },
-  });
-
-  return {
-    props: { posts },
-  };
-};
+import axios from "axios";
 
 type Props = {
   profilePic?: string | null;
   id?: number;
   name?: string;
-  posts?: Post[] | null;
+  posts: Post[];
 };
 
 const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
+  const [usersPosts, setUserPosts] = useState(posts);
+
+  const handleChange = async () => {
+    console.log("BAPTISTE");
+    try {
+      const newPosts = await axios.get(
+        `http://localhost:3000/api/post?userId=${userId}`
+      );
+      console.log("NEW POST ");
+      setUserPosts([...usersPosts, newPosts.data]);
+    } catch (e) {
+      console.log("ERROR ?");
+      console.log(e);
+    }
+  };
   return (
     <div className=" w-full max-w-2xl flex flex-col items-center  justify-center px-8 gap-4 py-6 ">
       <div className="w-full flex justify-center items-center gap-16 ">
@@ -41,7 +38,7 @@ const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
       <div className="w-full bg-white ">
         <PublicationForm image={profilePic ?? ""} authorId={userId} />
       </div>
-      {posts?.map((post) => (
+      {usersPosts?.map((post) => (
         <Publication
           key={post.id}
           url={profilePic ?? ""}
@@ -50,6 +47,7 @@ const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
           date={post.createdAt}
           postId={post.id}
           disable={false}
+          onChange={handleChange}
         />
       ))}
     </div>

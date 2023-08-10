@@ -2,18 +2,13 @@ import React from "react";
 import Image from "next/image";
 import Button from "@/components/Button";
 import PublicationSection from "@/components/PublicationSection";
-import { getPostsByAuthor } from "@/lib/posts";
-import { getUsersById } from "@/lib/users";
-import Header from "@/components/Header";
 import { GetServerSideProps } from "next/types";
 import { Post, User } from "@prisma/client";
 import SideBar from "@/components/SideBar";
-import prisma from "@/lib/prisma";
 import { useRouter } from "next/router";
+import prisma from "@/lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const slug = context.query.userName;
-
   const users = await prisma.user.findMany();
 
   const user = await prisma.user.findFirst({
@@ -39,19 +34,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 type Props = {
-  postTest?: Post[] | null;
-  userTest?: User | null;
-  usersTest?: User[] | null;
+  postTest: Post[];
+  userTest: User;
+  usersTest: User[];
 };
 
-export default function ProfilePage(
-  { postTest: posts, userTest: user, usersTest: users }: Props,
-  {
-    params,
-  }: {
-    params: { userName: string };
-  }
-) {
+export default function ProfilePage({
+  postTest: posts,
+  userTest: user,
+  usersTest: users,
+}: Props) {
   // const { user } = await getUsersById(params.userName);
 
   // const { posts } = await getPostsByAuthor(user?.id);

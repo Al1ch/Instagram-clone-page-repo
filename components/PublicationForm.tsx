@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import axios from "axios";
+import { Post } from "@prisma/client";
 
 type Props = {
   image: string;
@@ -28,11 +29,11 @@ const PublicationForm = ({ authorId, image }: Props) => {
   const handlePublicationCreation = async (formData: FormData) => {
     const content = formData.get("content");
     const postData = { content, authorId };
-    const res = await axios.post("http://localhost:3000/api/post", {
+    const res = await axios.post<Post>("http://localhost:3000/api/post", {
       content,
       authorId,
     });
-    console.log("RES", res);
+
     // await createPublication(content as string, authorId || 1, pathName);
     // formRef.current?.reset();
   };

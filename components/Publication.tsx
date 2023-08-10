@@ -4,6 +4,8 @@ import Trash from "@/assets/vectors/trash.svg";
 import Button from "./Button";
 import { revalidatePath } from "next/cache";
 import { usePathname } from "next/navigation";
+import axios from "axios";
+import { Post } from "@prisma/client";
 
 type Props = {
   name: string;
@@ -13,6 +15,7 @@ type Props = {
   key: number;
   postId: number;
   disable: boolean;
+  onChange?: () => void;
 };
 
 const getCorrectTimeFormat = (time?: number) => {
@@ -23,12 +26,6 @@ const getCorrectTimeFormat = (time?: number) => {
   return time;
 };
 
-async function deletePost(id: number, pathName: string): Promise<void> {
-  await fetch(`/api/post/${id}`, {
-    method: "DELETE",
-  });
-}
-
 const Publication = ({
   name,
   url,
@@ -36,7 +33,13 @@ const Publication = ({
   date,
   postId,
   disable = false,
+  onChange: handleChange,
 }: Props) => {
+  async function deletePost(id: number, pathName: string): Promise<void> {
+    console.log("BONJOUR");
+    await axios.delete(`http://localhost:3000/api/post/${id}`);
+    handleChange?.();
+  }
   const pathName = usePathname();
 
   return (
