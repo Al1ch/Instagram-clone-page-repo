@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab from "./Tab";
 import PublicationForm from "./PublicationForm";
 import Publication from "./Publication";
@@ -17,13 +17,15 @@ type Props = {
 const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
   const [usersPosts, setUserPosts] = useState(posts);
 
+  useEffect(() => {
+    setUserPosts(posts); //
+  }, [posts]);
+
   const handleChange = async () => {
-    console.log("BAPTISTE");
     try {
       const newPosts = await axios.get(
         `http://localhost:3000/api/post?userId=${userId}`
       );
-      console.log("NEW POST ");
       setUserPosts(newPosts.data);
     } catch (e) {
       console.log("ERROR ?");
@@ -53,7 +55,7 @@ const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
           url={profilePic ?? ""}
           name={name ?? ""}
           content={post.content ?? ""}
-          date={post.createdAt}
+          date={post.createdAt as Date}
           postId={post.id}
           disable={false}
           onChange={handleChange}

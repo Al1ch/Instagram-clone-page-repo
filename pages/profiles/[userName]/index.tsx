@@ -44,9 +44,8 @@ export default function ProfilePage({
   userTest: user,
   usersTest: users,
 }: Props) {
-  // const { user } = await getUsersById(params.userName);
+  console.log("posts", posts);
 
-  // const { posts } = await getPostsByAuthor(user?.id);
 
   return (
     <div className="flex flex-row min-h-screen min-w-screen  bg-black overflow-hidden">

@@ -11,7 +11,7 @@ type Props = {
   name: string;
   url?: string;
   content: string;
-  date?: Date;
+  date: Date;
   key: number;
   postId: number;
   disable: boolean;
@@ -30,17 +30,18 @@ const Publication = ({
   name,
   url,
   content,
-  date,
+  date: creationDate,
   postId,
   disable = false,
   onChange: handleChange,
 }: Props) => {
   async function deletePost(id: number, pathName: string): Promise<void> {
-    console.log("BONJOUR");
     await axios.delete(`http://localhost:3000/api/post/${id}`);
     handleChange?.();
   }
   const pathName = usePathname();
+
+  let date = new Date(creationDate);
 
   return (
     <div className=" flex flex-col gap-1 justify-items-start w-full  rounded-xl p-6  bg-[#1b2936]">
@@ -55,7 +56,7 @@ const Publication = ({
         <p className="text-slate-50	">{content} </p>
       </div>
       <div className="flex w-full justify-between ">
-        {/* <div className="flex gap-1">
+        <div className="flex gap-1">
           <p className="text-slate-500">
             {getCorrectTimeFormat(date?.getDay())}/
             {getCorrectTimeFormat(date?.getMonth())}/{date?.getFullYear()}
@@ -65,7 +66,7 @@ const Publication = ({
             {getCorrectTimeFormat(date?.getMinutes())}:
             {getCorrectTimeFormat(date?.getSeconds())}
           </p>
-        </div> */}
+        </div>
         {!disable && (
           <Button
             image={<Trash className={"hover:fill-red-600 transition-colors"} />}
