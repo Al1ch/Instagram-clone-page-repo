@@ -44,9 +44,6 @@ export default function ProfilePage({
   userTest: user,
   usersTest: users,
 }: Props) {
-  console.log("posts", posts);
-
-
   return (
     <div className="flex flex-row min-h-screen min-w-screen  bg-black overflow-hidden">
       <SideBar users={users} />

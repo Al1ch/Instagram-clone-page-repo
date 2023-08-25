@@ -69,6 +69,7 @@ const Publication = ({
         </div>
         {!disable && (
           <Button
+            label="Trash"
             image={<Trash className={"hover:fill-red-600 transition-colors"} />}
             className="cursor-pointer"
             postId={postId}

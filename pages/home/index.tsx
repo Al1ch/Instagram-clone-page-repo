@@ -1,8 +1,6 @@
 import Image from "next/image";
 import SideBar from "@/components/SideBar";
 import Publication from "@/components/Publication";
-import { getPosts } from "@/lib/posts";
-import { getUsers } from "@/lib/users";
 import { GetServerSideProps } from "next/types";
 import { Post, User } from "@prisma/client";
 import prisma from "@/lib/prisma";

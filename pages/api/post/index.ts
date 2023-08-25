@@ -25,15 +25,12 @@ export default async function handle(
         return e;
       }
     case "GET":
-      console.log("EST CE QUE CA FAIT LE GET ");
       try {
-        console.log("ENTRER TRY ");
         const post = await prisma.post.findMany({
           where: {
             authorId: parseInt(req.query.userId as string),
           },
         });
-        console.log("FIN  TRY ");
         res.status(200).json(post);
       } catch (e) {
         console.log(e);

@@ -3,8 +3,6 @@ import Tab from "./Tab";
 import PublicationForm from "./PublicationForm";
 import Publication from "./Publication";
 import { Post } from "@prisma/client";
-import { getPostsByAuthor } from "@/lib/posts";
-import { GetServerSideProps } from "next/types";
 import axios from "axios";
 
 type Props = {
@@ -18,7 +16,7 @@ const PublicationSection = ({ profilePic, name, id: userId, posts }: Props) => {
   const [usersPosts, setUserPosts] = useState(posts);
 
   useEffect(() => {
-    setUserPosts(posts); //
+    setUserPosts(posts); 
   }, [posts]);
 
   const handleChange = async () => {
